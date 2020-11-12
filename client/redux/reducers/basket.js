@@ -1,39 +1,43 @@
 const ADD_CART = 'ADD_CART'
 const UPDATE_AMOUNT = 'UPDATE_AMOUNT'
+const SET_SORT_BASKET = 'SET_SORT_BASKET'
 
 const initialState = {
-  cart: {},
+  cart: [],
   totalPrice: 0,
-  totalAmount: 0,
-  count: 0
+  totalAmount: 0
 }
 
-const removeDuplets = (cart) => {
-  if (typeof cart !== 'undefined') {
-    const count = cart.count + 1
+const setCount = (product, amount) => {
+  if (typeof product !== 'undefined') {
+    const count = product.count + amount
     return count
   }
   return 1
 }
 
-const sumAmount = (cart) => {
+const sumOfItems = (cart) => {
   if (typeof cart !== 'undefined') {
-    return Object.keys(cart).reduce((acc, rec) => acc + cart[rec].count, 0)
+    return cart.reduce((acc, rec) => acc + rec.count, 0)
   }
   return 0
 }
 
-const globalReCount = (cart) => {
-  const totalAmount = Object.keys(cart).reduce((acc, rec) => {
-    console.log('LOOOK HERE cart[rec]', cart[rec])
-    console.log('LOOOK HERE cart[rec].count', cart[rec].count)
-    return acc + cart[rec].count
-  }, 0)
-  const totalPrice = Object.keys(cart).reduce(
-    (acc, rec) => acc + cart[rec].price * cart[rec].count,
-    0
-  )
+const globalRePrice = (cart) => {
+  const totalAmount = cart.reduce((acc, rec) => acc + rec.count, 0)
+  const totalPrice = cart.reduce((acc, rec) => acc + rec.price * rec.count, 0)
   return { totalAmount, totalPrice }
+}
+
+const updateCart = (cart, item, payload = 1) => {
+  const itemInCart = cart.find((cartItem) => cartItem.id === item.id)
+  const newItem = {
+    ...(typeof itemInCart !== 'undefined' ? itemInCart : item),
+    count: setCount(itemInCart, payload)
+  }
+  const upCart = typeof itemInCart !== 'undefined' ? [...cart] : [...cart, newItem]
+  const newCart = upCart.map((cartItem) => (cartItem.id === item.id ? newItem : cartItem))
+  return newCart.filter((cartItem) => cartItem.count !== 0)
 }
 
 export default (state = initialState, action) => {
@@ -41,47 +45,43 @@ export default (state = initialState, action) => {
     case ADD_CART: {
       return {
         ...state,
-        cart: {
-          ...state.cart,
-          [action.item.id]: {
-            ...action.item,
-            count: removeDuplets(state.cart[action.item.id])
-          }
-        },
-        totalAmount: sumAmount(state.cart) + 1,
+        cart: updateCart(state.cart, action.item),
+        totalAmount: sumOfItems(state.cart) + 1,
         totalPrice: state.totalPrice + action.item.price
       }
     }
     case UPDATE_AMOUNT: {
-      const reCount = state.cart[action.id].count + action.payload
-      const reCart = Object.keys(state.cart).reduce((acc, rec) => {
-        if (rec !== action.id) {
-          // console.log('acc:', acc, 'rec:', rec)
-          // console.log('Object.keys', Object.keys(state.cart))
-          return { ...acc, [rec]: state.cart[rec] }
+      const newCart = updateCart(state.cart, action.item, action.payload)
+      const updatedState = {
+        ...state,
+        cart: [...newCart]
+      }
+      return {
+        ...updatedState,
+        ...globalRePrice(updatedState.cart)
+      }
+    }
+    case SET_SORT_BASKET: {
+      const sortedList = [...state.cart].sort((a, b) => {
+        if (action.name === 'price') {
+          if (a.price > b.price) return 1
+          if (a.price < b.price) return -1
+          return 0
         }
-        return { ...acc }
-      }, {})
-      if (reCount < 0) {
+        if (a.title > b.title) return 1
+        if (a.title < b.title) return -1
+        return 0
+      })
+      if (action.sortType === false) {
         return {
           ...state,
-          cart: reCart,
-          ...globalReCount(state.cart)
+          cart: sortedList.reverse()
         }
       }
-        const updatedState = {
+      return {
         ...state,
-        cart: {
-          ...state.cart,
-          [action.id]: {
-            ...state.cart[action.id],
-            count: reCount
-          }
-        }}
-        return {
-          ...updatedState,
-          ...globalReCount(updatedState.cart)
-        }
+        cart: sortedList
+      }
     }
     default:
       return state
@@ -95,17 +95,22 @@ export function sendBasket(item) {
   }
 }
 
-export function updateAmount(id, change) {
-  let payload = 0
-  if (change === '+') {
-    payload = 1
-  }
+export function updateAmount(item, change) {
+  let payload = 1
   if (change === '-') {
     payload = -1
   }
   return {
     type: UPDATE_AMOUNT,
-    id,
+    item,
     payload
+  }
+}
+
+export function setSortBasket(name, sortType) {
+  return {
+    type: SET_SORT_BASKET,
+    sortType,
+    name
   }
 }

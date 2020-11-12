@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
 const OrderCount = () => {
-  const { totalPrice, totalAmount} = useSelector((s) => s.basket)
+  const { totalPrice, totalAmount } = useSelector((s) => s.basket)
   const currency = useSelector((s) => s.goods.currency)
   const rate = useSelector((s) => s.goods.rates[s.goods.currency])
   const totalP = (totalPrice * rate).toFixed(2)

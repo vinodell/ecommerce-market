@@ -9,7 +9,7 @@ const Card = (props) => {
   const currency = useSelector((s) => s.goods.currency)
   const rate = useSelector((s) => s.goods.rates[s.goods.currency])
   const actualPrice = rate * info.price
-  const productAmount = useSelector((s) => s.basket.cart[info.id])
+  const productAmount = useSelector((s) => s.basket.cart).find((item) => item.id === info.id)
   const onClick = () => {
     dispatch(sendBasket(info))
   }
