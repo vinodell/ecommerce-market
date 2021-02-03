@@ -35,12 +35,12 @@ export default (state = initialState, action) => {
           if (a.price < b.price) return -1
           return 0
         }
-          if (a.title > b.title) return 1
-          if (a.title < b.title) return -1
-          return 0
-        })
-        if (action.sortType === false) {
-          return {
+        if (a.title > b.title) return 1
+        if (a.title < b.title) return -1
+        return 0
+      })
+      if (action.sortType === false) {
+        return {
           ...state,
           list: sortedList.reverse()
         }
@@ -67,14 +67,24 @@ export function setGoods() {
 }
 
 export function setCurrency(currency) {
-  return (dispatch) => {
-    axios(`https://api.exchangeratesapi.io/latest?base=USD`).then(({ data }) => {
+  return (dispatch, getState) => {
+    const store = getState()
+    const { currency: prevCurrency } = store.goods
+    axios('/api/v1/rates').then(({ data: rates }) => {
       dispatch({
         type: SET_CURRENCY,
         currency,
-        rates: data.rates
+        rates
       })
     })
+    axios({
+      method: 'post',
+      url: '/api/v1/logs',
+      data: {
+        time: +new Date(),
+        action: `customer changed currency from ${prevCurrency} to ${currency}`
+      }
+    }).catch((err) => console.log(err))
   }
 }
 

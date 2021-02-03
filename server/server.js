@@ -1,5 +1,6 @@
 import express from 'express'
 import path from 'path'
+import axios from 'axios'
 import cors from 'cors'
 import bodyParser from 'body-parser'
 import sockjs from 'sockjs'
@@ -10,11 +11,26 @@ import cookieParser from 'cookie-parser'
 import config from './config'
 import Html from '../client/html'
 
-const { readFile } = require('fs').promises
+const { readFile, writeFile } = require('fs').promises
 
 const Root = () => ''
 
 let connections = []
+
+const getLogs = () => {
+  return readFile(`${__dirname}/data/logs.json`, { encoding: 'utf8' })
+    .then((file) => JSON.parse(file))
+    .catch(async () => {
+      await writeFile(`${__dirname}/data/logs.json`, '[]', { encoding: 'utf8' })
+      return []
+    })
+}
+
+const setLogs = (body, logs) => {
+  return writeFile(`${__dirname}/data/logs.json`, JSON.stringify([body, ...logs]), {
+    encoding: 'utf8'
+  })
+}
 
 const port = process.env.PORT || 8090
 const server = express()
@@ -31,9 +47,27 @@ middleware.forEach((it) => server.use(it))
 
 server.get('/api/v1/goods', async (req, res) => {
   const readGoods = await readFile(`${__dirname}/data/sale.json`, { encoding: 'utf8' })
-    .then(file => JSON.parse(file))
+    .then((file) => JSON.parse(file))
     .catch(() => ({ result: 'empty stock' }))
   res.json(readGoods)
+})
+
+server.get('/api/v1/rates', async (req, res) => {
+  const rates = await axios('https://api.exchangeratesapi.io/latest?base=USD').then(
+    ({ data }) => data.rates
+  )
+  res.json(rates)
+})
+
+server.get('/api/v1/logs', async (req, res) => {
+  const logs = await getLogs()
+  res.json(logs)
+})
+
+server.post('/api/v1/logs', async (req, res) => {
+  const logs = await getLogs()
+  await setLogs(req.body, logs)
+  res.send('logs updated')
 })
 
 server.use('/api/', (req, res) => {

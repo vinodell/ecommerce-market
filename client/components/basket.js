@@ -11,9 +11,9 @@ const Basket = () => {
   const rate = useSelector((s) => s.goods.rates[s.goods.currency])
   const onClick = (item, ch) => {
     if (ch === '+') {
-     return dispatch(updateAmount(item, '+'))
+      return dispatch(updateAmount(item, '+'))
     }
-     return dispatch(updateAmount(item, '-'))
+    return dispatch(updateAmount(item, '-'))
   }
   return (
     <div>

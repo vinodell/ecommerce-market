@@ -11,11 +11,11 @@ const Sort = () => {
   const dispatch = useDispatch()
   const onClick = (sortType) => {
     return () => {
-    setToggle(!toggled)
-    setIcon(toggled ? '↥' : '↧')
-    activatePush(sortType)
-    dispatch(setSort(sortType, toggled))
-    dispatch(setSortBasket(sortType, toggled))
+      setToggle(!toggled)
+      setIcon(toggled ? '↥' : '↧')
+      activatePush(sortType)
+      dispatch(setSort(sortType, toggled))
+      dispatch(setSortBasket(sortType, toggled))
     }
   }
   return (

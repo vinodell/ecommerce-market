@@ -1,3 +1,5 @@
+import axios from 'axios'
+
 const ADD_CART = 'ADD_CART'
 const UPDATE_AMOUNT = 'UPDATE_AMOUNT'
 const SET_SORT_BASKET = 'SET_SORT_BASKET'
@@ -89,9 +91,19 @@ export default (state = initialState, action) => {
 }
 
 export function sendBasket(item) {
-  return {
-    type: ADD_CART,
-    item
+  return (dispatch) => {
+    dispatch({
+      type: ADD_CART,
+      item
+    })
+    axios({
+      method: 'post',
+      url: '/api/v1/logs',
+      data: {
+        time: +new Date(),
+        action: `customer added ${item.title} to the cart`
+      }
+    }).catch((err) => console.log(err))
   }
 }
 
@@ -100,17 +112,37 @@ export function updateAmount(item, change) {
   if (change === '-') {
     payload = -1
   }
-  return {
-    type: UPDATE_AMOUNT,
-    item,
-    payload
+  return (dispatch) => {
+    dispatch({
+      type: UPDATE_AMOUNT,
+      item,
+      payload
+    })
+    axios({
+      method: 'post',
+      url: '/api/v1/logs',
+      data: {
+        time: +new Date(),
+        action: change === '+' ? `customer added ${item.title}` : `customer removed ${item.title}`
+      }
+    }).catch((err) => console.log(err))
   }
 }
 
 export function setSortBasket(name, sortType) {
-  return {
-    type: SET_SORT_BASKET,
-    sortType,
-    name
+  return (dispatch) => {
+    dispatch({
+      type: SET_SORT_BASKET,
+      sortType,
+      name
+    })
+    axios({
+      method: 'post',
+      url: '/api/v1/logs',
+      data: {
+        time: +new Date(),
+        action: `customer changed sort by ${name}`
+      }
+    }).catch((err) => console.log(err))
   }
 }
