@@ -123,7 +123,7 @@ export function updateAmount(item, change) {
       url: '/api/v1/logs',
       data: {
         time: +new Date(),
-        action: change === '+' ? `customer added ${item.title}` : `customer removed ${item.title}`
+        action: change === '+' ? `customer added 1 ${item.title}` : `customer removed 1 ${item.title}`
       }
     }).catch((err) => console.log(err))
   }

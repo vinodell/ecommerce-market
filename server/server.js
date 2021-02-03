@@ -11,7 +11,7 @@ import cookieParser from 'cookie-parser'
 import config from './config'
 import Html from '../client/html'
 
-const { readFile, writeFile } = require('fs').promises
+const { readFile, writeFile, unlink } = require('fs').promises
 
 const Root = () => ''
 
@@ -68,6 +68,11 @@ server.post('/api/v1/logs', async (req, res) => {
   const logs = await getLogs()
   await setLogs(req.body, logs)
   res.send('logs updated')
+})
+
+server.delete('/api/v1/logs', (req, res) => {
+  unlink(`${__dirname}/data/logs.json`)
+  res.send('logs are successfully deleted')
 })
 
 server.use('/api/', (req, res) => {
