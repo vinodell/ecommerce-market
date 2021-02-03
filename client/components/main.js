@@ -1,3 +1,4 @@
+import axios from 'axios'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -7,6 +8,17 @@ import Card from './common/card'
 import { setGoods } from '../redux/reducers/goods'
 
 const Main = () => {
+  useEffect(() => {
+    axios({
+      method: 'post',
+      url: '/api/v1/logs',
+      data: {
+        time: +new Date(),
+        action: `navigate to ${window.location.pathname} page`
+      }
+    }).catch((err) => console.log(err))
+    return () => {}
+  }, [])
   const dispatch = useDispatch()
   const listStock = useSelector((s) => s.goods.list.slice(0, 10))
   useEffect(() => {
