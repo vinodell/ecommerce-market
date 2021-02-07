@@ -57,12 +57,14 @@ export default (state = initialState, action) => {
 
 export function setGoods() {
   return (dispatch) => {
-    axios('/api/v1/goods').then(({ data }) => {
-      dispatch({
-        type: SET_LIST,
-        data
+    axios('/api/v1/goods')
+      .then(({ data }) => {
+        dispatch({
+          type: SET_LIST,
+          data
+        })
       })
-    })
+      .catch(() => {})
   }
 }
 
@@ -84,7 +86,7 @@ export function setCurrency(currency) {
         time: +new Date(),
         action: `customer changed currency from ${prevCurrency} to ${currency}`
       }
-    }).catch((err) => console.log(err))
+    }).catch(() => {})
   }
 }
 

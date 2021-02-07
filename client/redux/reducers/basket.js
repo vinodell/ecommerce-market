@@ -103,7 +103,7 @@ export function sendBasket(item) {
         time: +new Date(),
         action: `customer added ${item.title} to the cart`
       }
-    }).catch((err) => console.log(err))
+    }).catch(() => {})
   }
 }
 
@@ -123,9 +123,10 @@ export function updateAmount(item, change) {
       url: '/api/v1/logs',
       data: {
         time: +new Date(),
-        action: change === '+' ? `customer added 1 ${item.title}` : `customer removed 1 ${item.title}`
+        action:
+          change === '+' ? `customer added 1 ${item.title}` : `customer removed 1 ${item.title}`
       }
-    }).catch((err) => console.log(err))
+    }).catch(() => {})
   }
 }
 
@@ -143,6 +144,6 @@ export function setSortBasket(name, sortType) {
         time: +new Date(),
         action: `customer changed sort by ${name}`
       }
-    }).catch((err) => console.log(err))
+    }).catch(() => {})
   }
 }

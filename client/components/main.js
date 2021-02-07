@@ -14,9 +14,9 @@ const Main = () => {
       url: '/api/v1/logs',
       data: {
         time: +new Date(),
-        action: `navigate to ${window.location.pathname} page`
+        action: `navigate to main page`
       }
-    }).catch((err) => console.log(err))
+    }).catch(() => {})
     return () => {}
   }, [])
   const dispatch = useDispatch()
