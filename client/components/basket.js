@@ -30,7 +30,6 @@ const Basket = () => {
   return (
     <div>
       <div className="px-16 py-4 bg-gray-800 text-gray-200 font-bold">
-        {' '}
         basket-page
         <Header />
       </div>

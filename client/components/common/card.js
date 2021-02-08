@@ -14,21 +14,27 @@ const Card = (props) => {
     dispatch(sendBasket(info))
   }
   return (
-    <div className="card flex flex-wrap h-40 justify-around items-center m-4 border-4 border-gray-500 px-2 py-2">
-      <div className="card__image">{info.image}</div>
-      <div className="card__price">{actualPrice.toFixed(2)}</div>
-      <div className="currency">{currency}</div>
-      <div className="card__title">{info.title}</div>
-      <div className="card__product-amount text-gray-700">
-        {typeof productAmount !== 'undefined' ? productAmount.count : 0}
+    <div className="flex flex-col card min-w-full max-w-xs rounded overflow-hidden shadow-lg">
+      <img className="card__image w-full object-cover h-40" src={info.image} alt={info.title} />
+      <div className="px-6 px-4">
+        <div className="flex justify-center items-end">
+          <div className="card__price text-gray-700 text-lg">{actualPrice.toFixed(2)}</div>
+          <div className="currency text-gray-700 ml-2 text-sm">-{currency}</div>
+        </div>
+        <div className="card__title text-center font-bold text-xl mb-2">{info.title}</div>
+        <div className="card__product-amount text-gray-700">
+          {typeof productAmount !== 'undefined' ? productAmount.count : 0}
+        </div>
       </div>
-      <button
-        type="button"
-        className="card__product-amount border-2 border-gray-300 rounded-lg px-2 py-2"
-        onClick={onClick}
-      >
-        Add
-      </button>
+      <div className="px-6 pt-4 pb-2">
+        <button
+          type="button"
+          className="card__product-amount inline-block  bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700"
+          onClick={onClick}
+        >
+          Add +
+        </button>
+      </div>
     </div>
   )
 }

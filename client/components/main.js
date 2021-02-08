@@ -26,16 +26,18 @@ const Main = () => {
     return () => {}
   }, [dispatch])
   return (
-    <div>
-      <Head title="Hello" />
+    <div className="flex flex-col items-center">
+      <Head title="Main" />
       <Header />
-      {listStock.map((item) => {
-        return (
-          <div key={item.id} className="m-2">
-            <Card info={item} />
-          </div>
-        )
-      })}
+      <div className="flex flex-wrap justify-evenly w-11/12">
+        {listStock.map((item) => {
+          return (
+            <div key={item.id} className="flex-auto max-w-xs m-2">
+              <Card info={item} />
+            </div>
+          )
+        })}
+      </div>
     </div>
   )
 }
