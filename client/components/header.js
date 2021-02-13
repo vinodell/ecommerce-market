@@ -7,16 +7,13 @@ import Currency from './common/currency'
 
 const Header = () => {
   return (
-    <div className="flex bg-teal-800 justify-around p-2 text-teal-200 font-bold">
-      <div className="text-teal-200" id="brand-name">
+    <div className="flex bg-gray-800 w-full justify-around p-2 text-gray-200 font-bold">
+      <div className="text-gray-200" id="brand-name">
         <Link to="/">vinodel-market</Link>
       </div>
       <Sort />
       <Currency />
       <Order />
-      <div id="order-count">
-        <Link to="/basket">order</Link>
-      </div>
     </div>
   )
 }

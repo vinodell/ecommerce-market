@@ -19,7 +19,7 @@ const Card = (props) => {
       <div className="px-6 px-4">
         <div className="flex justify-center items-end">
           <div className="card__price text-gray-700 text-lg">{actualPrice.toFixed(2)}</div>
-          <div className="currency text-gray-700 ml-2 text-sm">-{currency}</div>
+          <div className="currency text-gray-700 ml-2 text-sm">{currency}</div>
         </div>
         <div className="card__title text-center font-bold text-xl mb-2">{info.title}</div>
         <div className="card__product-amount text-gray-700">
@@ -38,5 +38,7 @@ const Card = (props) => {
     </div>
   )
 }
+
+Card.propTypes = {}
 
 export default Card

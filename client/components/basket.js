@@ -28,11 +28,8 @@ const Basket = () => {
     return dispatch(updateAmount(item, '-'))
   }
   return (
-    <div>
-      <div className="px-16 py-4 bg-gray-800 text-gray-200 font-bold">
-        basket-page
+    <div className="bg-gray-300">
         <Header />
-      </div>
       {cart.map((item, index) => {
         return (
           <div key={item.id} className="m-2 border-4 border-gray-400">
@@ -50,14 +47,14 @@ const Basket = () => {
             </div>
             <button
               type="button"
-              className="bg-red-300 border-2 border-gray-400 text-gray-900 font-bold rounded-full flex-justify-center px-2"
+              className="card__product-amount inline-block  bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700"
               onClick={() => onClick(item, '-')}
             >
               remove
             </button>
             <button
               type="button"
-              className="bg-red-300 border-2 border-gray-400 text-gray-900 font-bold rounded-full flex-justify-center px-2"
+              className="card__product-amount inline-block  bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700"
               onClick={() => onClick(item, '+')}
             >
               add

@@ -26,7 +26,7 @@ const Main = () => {
     return () => {}
   }, [dispatch])
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center bg-gray-400">
       <Head title="Main" />
       <Header />
       <div className="flex flex-wrap justify-evenly w-11/12">
