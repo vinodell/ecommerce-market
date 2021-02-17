@@ -3,7 +3,7 @@ import axios from 'axios'
 const ADD_CART = 'ADD_CART'
 const UPDATE_AMOUNT = 'UPDATE_AMOUNT'
 const SET_SORT_BASKET = 'SET_SORT_BASKET'
-const SAVE_CART = 'SAVE_CART'
+// const SAVED_CART = 'SAVED_CART'
 
 const initialState = {
   cart: [],
@@ -42,6 +42,16 @@ const updateCart = (cart, item, payload = 1) => {
   const newCart = upCart.map((cartItem) => (cartItem.id === item.id ? newItem : cartItem))
   return newCart.filter((cartItem) => cartItem.count !== 0)
 }
+
+// const parseOldCart = (cart) => {
+//   let oldCart
+//   try {
+//     oldCart = JSON.parse(cart)
+//   } catch (error) {
+//     oldCart = {}
+//   }
+//   return oldCart
+// }
 
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -86,12 +96,12 @@ export default (state = initialState, action) => {
         cart: sortedList
       }
     }
-    case SAVE_CART: {
-      return {
-        ...state,
-        ...JSON.parse(action.cart)
-      }
-    }
+    // case SAVED_CART: {
+    //   return {
+    //     ...state,
+    //     ...parseOldCart(action.cart)
+    //   }
+    // }
     default:
       return state
   }
@@ -155,9 +165,9 @@ export function setSortBasket(name, sortType) {
   }
 }
 
-export function saveCart (cart) {
-  return ({
-    type: SAVE_CART,
-    cart
-  })
-}
+// export function getOldCart(cart) {
+//   return {
+//     type: SAVED_CART,
+//     cart
+//   }
+// }

@@ -1,6 +1,7 @@
 import axios from 'axios'
 
 const GET_LOGS = 'GET_LOGS'
+const SAVE_LOGS = 'SAVE_LOGS'
 
 const initialState = {
   logsList: []
@@ -12,6 +13,12 @@ export default (state = initialState, action) => {
       return {
         ...state,
         logsList: action.data
+      }
+    }
+    case SAVE_LOGS: {
+      return {
+        ...state,
+        ...action.info
       }
     }
     default:
@@ -30,4 +37,23 @@ export function getLogs() {
       )
       .catch(() => {})
   }
+}
+
+export function saveLogs(value) {
+  return (dispatch) => {
+    axios({
+      method: 'post',
+      url: '/api/v1/logs',
+      data: {
+        time: +new Date(),
+        action: `navigate to ${value} page`
+      }
+    })
+      .then(({ info }) => {
+        dispatch({
+          type: SAVE_LOGS,
+          info
+        })
+      })
+      .catch((err) => console.log(err))}
 }

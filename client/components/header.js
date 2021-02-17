@@ -7,18 +7,21 @@ import Sort from './common/sort'
 import Order from './common/order'
 import Currency from './common/currency'
 
-import { saveCart } from '../redux/reducers/basket'
+import { saveLogs } from '../redux/reducers/logs'
+import { setGoods } from '../redux/reducers/goods'
+// import { getOldCart } from '../redux/reducers/basket'
 
 const Header = () => {
   const dispatch = useDispatch()
-  const basket = useSelector((s) => s.basket)
+  const cart = useSelector((s) => s.basket)
   useEffect(() => {
-    dispatch(saveCart(localStorage.getItem('save_cart')))
+    dispatch(saveLogs(window.location.pathname))
+    dispatch(setGoods())
     return () => {}
-  }, [])
+  }, [dispatch])
   return (
     <div className="flex bg-gray-800 w-full justify-around p-2 text-gray-200 font-bold">
-      {useBeforeunload(() => localStorage.setItem('save_cart', JSON.stringify(basket)))}
+      {useBeforeunload(() => localStorage.setItem('save_cart', JSON.stringify(cart)))}
       <div className="text-gray-200" id="brand-name">
         <Link to="/">vinodel-market</Link>
       </div>

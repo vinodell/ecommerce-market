@@ -1,22 +1,10 @@
-import axios from 'axios'
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 import Header from './header'
 import { updateAmount } from '../redux/reducers/basket'
 
 const Basket = () => {
-  useEffect(() => {
-    axios({
-      method: 'post',
-      url: '/api/v1/logs',
-      data: {
-        time: +new Date(),
-        action: `navigate to ${window.location.pathname} page`
-      }
-    }).catch((err) => console.log(err))
-    return () => {}
-  }, [])
   const dispatch = useDispatch()
   const { cart } = useSelector((s) => s.basket)
   const currency = useSelector((s) => s.goods.currency)
@@ -29,6 +17,7 @@ const Basket = () => {
   }
   return (
     <div className="bg-gray-300">
+
         <Header />
       {cart.map((item, index) => {
         return (

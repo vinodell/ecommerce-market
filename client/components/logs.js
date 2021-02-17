@@ -15,17 +15,6 @@ const Logs = () => {
     })
   }
   useEffect(() => {
-    axios({
-      method: 'post',
-      url: '/api/v1/logs',
-      data: {
-        time: +new Date(),
-        action: `navigate to ${window.location.pathname} page`
-      }
-    }).catch((err) => console.log(err))
-    return () => {}
-  }, [])
-  useEffect(() => {
     dispatch(getLogs())
     return () => {}
   }, [dispatch])

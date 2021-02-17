@@ -13,12 +13,19 @@ const initialState = {
   sortType: true
 }
 
+const getImage = (products) => {
+  return products.map((it) => ({
+    ...it,
+    image: `https://source.unsplash.com/800x600/?${/\w+(?=\s)/gi.exec(it.title)}`
+  }))
+}
+
 export default (state = initialState, action) => {
   switch (action.type) {
     case SET_LIST: {
       return {
         ...state,
-        list: action.data
+        list: getImage(action.data)
       }
     }
     case SET_CURRENCY: {
